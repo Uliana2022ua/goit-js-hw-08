@@ -18,11 +18,14 @@ form. addEventListener('input',  throttle(onFormInput,  500));
 form. addEventListener('submit',  onFormSubmit);
 
 function getTempData() {
-  const  tempData  =  JSON. parse(localStorage. getItem(STORAGE_KEY));
+  const tempData = JSON.parse(localStorage.getItem(STORAGE_KEY));
+  
 
   if (tempData) {
     email. value  =  tempData. email;
-    message. value  =  tempData. message;
+    message.value = tempData.message;
+    formData.email = tempData.email;
+    formData.message = tempData.message;
   }
 }
 
@@ -34,7 +37,14 @@ function onFormInput(event) {
 }
 
 function onFormSubmit(event) {
-  event. preventDefault();
+  event.preventDefault();
+   const {
+    elements: { email, message },
+  } = event.target;
+  if (email.value === "" || message.value === "") {
+    alert("Заповніть всі поля");
+    return;
+  }
   event. currentTarget. reset();
   localStorage. removeItem(STORAGE_KEY);
   console. log(formData);
